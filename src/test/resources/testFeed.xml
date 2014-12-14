@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+    <channel>
+        <title>Lobsters</title>
+        <description></description>
+        <link>https://lobste.rs/</link>
+
+        <item>
+            <title>ssh chat.shazow.net</title>
+            <link>https://lobste.rs/s/lwmnsg/ssh_chat_shazow_net</link>
+            <guid isPermaLink="false">https://lobste.rs/s/lwmnsg</guid>
+            <author>shazow</author>
+            <pubDate>Fri, 12 Dec 2014 19:19:46 -0600</pubDate>
+            <comments>https://lobste.rs/s/lwmnsg/ssh_chat_shazow_net</comments>
+            <description>
+                &#60;p&#62;Hey Lobsters!&#60;/p&#62;&#10;&#10;&#60;p&#62;I wrote a custom SSH server in Go, give it a try. It uses your terminal user and SSH keys to authenticate implicitly. Instead of getting a shell, you get an IRC-style chatroom with everyone else.&#60;/p&#62;&#10;&#10;&#60;p&#62;  $ ssh chat.shazow.net&#60;/p&#62;&#10;&#10;&#60;p&#62;If you&#38;rsquo;re getting &#38;ldquo;Permission denied (publickey)&#38;rdquo;, please use ssh-keygen to create a keypair. Instructions here: &#60;a rel=&#34;nofollow&#34; href=&#34;https://help.github.com/articles/generating-ssh-keys/&#34;&#62;https://help.github.com/articles/generating-ssh-keys/&#60;/a&#62;&#10;SSH is a really cool protocol; it&#38;rsquo;s a lot like HTTP2. This is a demo of one thing you can do with it, but I plan to factor out the code into libraries that will let you build all kinds of experiences that can be used with any SSH client.&#60;/p&#62;&#10;&#10;&#60;p&#62;The source code is here: &#60;a rel=&#34;nofollow&#34; href=&#34;https://github.com/shazow/ssh-chat&#34;&#62;https://github.com/shazow/ssh-chat&#60;/a&#62;&#60;/p&#62;&#10;&#10;&#60;p&#62;(Should be reasonably stable and handle thousands of connections, but apologies in advance if it crashes: Try to reconnect in a minute.)&#60;/p&#62;&#10;
+            </description>
+            <category>show</category>
+        </item>
+        <item>
+            <title>Chromium Considers Marking HTTP As Non-Secure</title>
+            <link>https://www.chromium.org/Home/chromium-security/marking-http-as-non-secure</link>
+            <guid isPermaLink="false">https://lobste.rs/s/at0uhw</guid>
+            <author>pushcx</author>
+            <pubDate>Fri, 12 Dec 2014 23:14:51 -0600</pubDate>
+            <comments>https://lobste.rs/s/at0uhw/chromium_considers_marking_http_as_non-secure</comments>
+            <description>
+
+                &#60;p&#62;&#60;a href=&#34;https://lobste.rs/s/at0uhw/chromium_considers_marking_http_as_non-secure&#34;&#62;Comments&#60;/a&#62;&#60;/p&#62;
+            </description>
+            <category>browsers</category>
+            <category>security</category>
+            <category>web</category>
+        </item>
+        <item>
+            <title>Rust 1.0: Scheduling the trains</title>
+            <link>http://blog.rust-lang.org/2014/12/12/1.0-Timeline.html</link>
+            <guid isPermaLink="false">https://lobste.rs/s/5mmar5</guid>
+            <author>steveklabnik</author>
+            <pubDate>Fri, 12 Dec 2014 10:00:01 -0600</pubDate>
+            <comments>https://lobste.rs/s/5mmar5/rust_1_0_scheduling_the_trains</comments>
+            <description>
+
+                &#60;p&#62;&#60;a href=&#34;https://lobste.rs/s/5mmar5/rust_1_0_scheduling_the_trains&#34;&#62;Comments&#60;/a&#62;&#60;/p&#62;
+            </description>
+            <category>rust</category>
+        </item>
+        <item>
+            <title>Ruby compiled with Clang is 8% faster than with GCC 4.9, 44% faster than with GCC 4.7.2</title>
+            <link>http://cirandas.net/brauliobo/blog/ruby-compiled-with-clang-is-8-faster-than-with-gcc-4.9-and-44-faster-than-with-gcc-4.7.2</link>
+            <guid isPermaLink="false">https://lobste.rs/s/axsve1</guid>
+            <author>journeysquid</author>
+            <pubDate>Fri, 12 Dec 2014 13:32:48 -0600</pubDate>
+            <comments>https://lobste.rs/s/axsve1/ruby_compiled_with_clang_is_8_faster_than_with_gcc_4_9_44_faster_than_with_gcc_4_7_2</comments>
+            <description>
+
+                &#60;p&#62;&#60;a href=&#34;https://lobste.rs/s/axsve1/ruby_compiled_with_clang_is_8_faster_than_with_gcc_4_9_44_faster_than_with_gcc_4_7_2&#34;&#62;Comments&#60;/a&#62;&#60;/p&#62;
+            </description>
+            <category>ruby</category>
+            <category>c</category>
+        </item>
+        <item>
+            <title>Doom3 is the proof that &#8220;keep it simple&#8221; works</title>
+            <link>http://www.codergears.com/Blog/?p=1103</link>n
+            <guid isPermaLink="false">https://lobste.rs/s/gict2w</guid>
+            <author>pushcx</author>
+            <pubDate>Fri, 12 Dec 2014 11:26:37 -0600</pubDate>
+            <comments>https://lobste.rs/s/gict2w/doom3_is_the_proof_that_keep_it_simple_works</comments>
+            <description>
+
+                &#60;p&#62;&#60;a href=&#34;https://lobste.rs/s/gict2w/doom3_is_the_proof_that_keep_it_simple_works&#34;&#62;Comments&#60;/a&#62;&#60;/p&#62;
+            </description>
+            <category>c</category>
+            <category>visualization</category>
+            <category>practices</category>
+        </item>
+        <item>
+            <title>Apache Kafka Go Client</title>
+            <link>https://github.com/stealthly/go_kafka_client/</link>
+            <guid isPermaLink="false">https://lobste.rs/s/jgo2xg</guid>
+            <author>joestein</author>
+            <pubDate>Sat, 13 Dec 2014 04:06:00 -0600</pubDate>
+            <comments>https://lobste.rs/s/jgo2xg/apache_kafka_go_client</comments>
+            <description>
+
+                &#60;p&#62;&#60;a href=&#34;https://lobste.rs/s/jgo2xg/apache_kafka_go_client&#34;&#62;Comments&#60;/a&#62;&#60;/p&#62;
+            </description>
+            <category>go</category>
+            <category>compsci</category>
+        </item>
+        <item>
+            <title>High-interaction SSH Honeypot written in Go</title>
+            <link>http://www.reddit.com/r/golang/comments/2p1cms/high_interaction_ssh_honeypot/</link>
+            <guid isPermaLink="false">https://lobste.rs/s/od8yi5</guid>
+            <author>jaytaylor</author>
+            <pubDate>Fri, 12 Dec 2014 14:16:05 -0600</pubDate>
+            <comments>https://lobste.rs/s/od8yi5/high-interaction_ssh_honeypot_written_in_go</comments>
+            <description>
+
+                &#60;p&#62;&#60;a href=&#34;https://lobste.rs/s/od8yi5/high-interaction_ssh_honeypot_written_in_go&#34;&#62;Comments&#60;/a&#62;&#60;/p&#62;
+            </description>
+            <category>security</category>
+            <category>go</category>
+        </item>
+        <item>
+            <title>You Are Learning Haskell Right Now (Or Anything You Want Really)</title>
+            <link>http://michaelrbernste.in/2014/12/11/you-are-learning-haskell-right-now.html</link>
+            <guid isPermaLink="false">https://lobste.rs/s/jkeq0k</guid>
+            <author>arcatan</author>
+            <pubDate>Thu, 11 Dec 2014 14:29:30 -0600</pubDate>
+            <comments>https://lobste.rs/s/jkeq0k/you_are_learning_haskell_right_now_or_anything_you_want_really</comments>
+            <description>
+
+                &#60;p&#62;&#60;a href=&#34;https://lobste.rs/s/jkeq0k/you_are_learning_haskell_right_now_or_anything_you_want_really&#34;&#62;Comments&#60;/a&#62;&#60;/p&#62;
+            </description>
+            <category>haskell</category>
+        </item>
+        <item>
+            <title>Graceful Degradation</title>
+            <link>http://www.solipsys.co.uk/new/GracefulDegradation.html?LB_20141212</link>
+            <guid isPermaLink="false">https://lobste.rs/s/a0x8uf</guid>
+            <author>RiderOfGiraffes</author>
+            <pubDate>Fri, 12 Dec 2014 15:47:13 -0600</pubDate>
+            <comments>https://lobste.rs/s/a0x8uf/graceful_degradation</comments>
+            <description>
+
+                &#60;p&#62;&#60;a href=&#34;https://lobste.rs/s/a0x8uf/graceful_degradation&#34;&#62;Comments&#60;/a&#62;&#60;/p&#62;
+            </description>
+            <category>scaling</category>
+            <category>networking</category>
+            <category>distributed</category>
+        </item>
+        <item>
+            <title>ARC: Analysis of Raft Consensus</title>
+            <link>http://www.cl.cam.ac.uk/techreports/UCAM-CL-TR-857.pdf</link>
+            <guid isPermaLink="false">https://lobste.rs/s/k9ln3t</guid>
+            <author>kellogh</author>
+            <pubDate>Fri, 12 Dec 2014 09:03:20 -0600</pubDate>
+            <comments>https://lobste.rs/s/k9ln3t/arc_analysis_of_raft_consensus</comments>
+            <description>
+
+                &#60;p&#62;&#60;a href=&#34;https://lobste.rs/s/k9ln3t/arc_analysis_of_raft_consensus&#34;&#62;Comments&#60;/a&#62;&#60;/p&#62;
+            </description>
+            <category>pdf</category>
+            <category>distributed</category>
+        </item>
+        <item>
+            <title>24 Days of GHC Extensions: Type Families</title>
+            <link>https://ocharles.org.uk/blog/posts/2014-12-12-type-families.html</link>
+            <guid isPermaLink="false">https://lobste.rs/s/4htiek</guid>
+            <author>bitemyapp</author>
+            <pubDate>Fri, 12 Dec 2014 12:40:18 -0600</pubDate>
+            <comments>https://lobste.rs/s/4htiek/24_days_of_ghc_extensions_type_families</comments>
+            <description>
+
+                &#60;p&#62;&#60;a href=&#34;https://lobste.rs/s/4htiek/24_days_of_ghc_extensions_type_families&#34;&#62;Comments&#60;/a&#62;&#60;/p&#62;
+            </description>
+            <category>programming</category>
+            <category>haskell</category>
+        </item>
+        <item>
+            <title>Ten Things I Hate About Object-Oriented Programming (2010)</title>
+            <link>http://blog.jot.fm/2010/08/26/ten-things-i-hate-about-object-oriented-programming/comment-page-2/</link>
+            <guid isPermaLink="false">https://lobste.rs/s/k943io</guid>
+            <author>pushcx</author>
+            <pubDate>Thu, 11 Dec 2014 09:41:57 -0600</pubDate>
+            <comments>https://lobste.rs/s/k943io/ten_things_i_hate_about_object-oriented_programming_2010</comments>
+            <description>
+
+                &#60;p&#62;&#60;a href=&#34;https://lobste.rs/s/k943io/ten_things_i_hate_about_object-oriented_programming_2010&#34;&#62;Comments&#60;/a&#62;&#60;/p&#62;
+            </description>
+            <category>compsci</category>
+            <category>rant</category>
+            <category>practices</category>
+        </item>
+        <item>
+            <title>How to finish?</title>
+            <link>https://lobste.rs/s/pzj4mj/how_to_finish</link>
+            <guid isPermaLink="false">https://lobste.rs/s/pzj4mj</guid>
+            <author>mordae</author>
+            <pubDate>Wed, 10 Dec 2014 17:59:13 -0600</pubDate>
+            <comments>https://lobste.rs/s/pzj4mj/how_to_finish</comments>
+            <description>
+                &#60;p&#62;Here I am.&#60;/p&#62;&#10;&#10;&#60;p&#62;Having about ten days to finish, polish and deliver a piece of code. After wrestling with it for almost half a year I now understand the problem domain. I have discovered several possible solutions and picked my preferred one, too.&#60;/p&#62;&#10;&#10;&#60;p&#62;The problem is that with the interesting puzzle gone, the coding itself bores me.&#60;/p&#62;&#10;&#10;&#60;p&#62;I am anxious about my inability to sit down, concentrate and finish the piece. But when I try, I immediately find a distraction.&#60;/p&#62;&#10;&#10;&#60;p&#62;How do I finish it?&#60;/p&#62;&#10;
+            </description>
+            <category>philosophy</category>
+            <category>ask</category>
+        </item>
+        <item>
+            <title>Writing a Haskell API Server (Part 2)</title>
+            <link>http://bendyworks.com/haskell-api-server-2/</link>
+            <guid isPermaLink="false">https://lobste.rs/s/vinfy7</guid>
+            <author>twopoint718</author>
+            <pubDate>Thu, 11 Dec 2014 12:04:20 -0600</pubDate>
+            <comments>https://lobste.rs/s/vinfy7/writing_a_haskell_api_server_part_2</comments>
+            <description>
+
+                &#60;p&#62;&#60;a href=&#34;https://lobste.rs/s/vinfy7/writing_a_haskell_api_server_part_2&#34;&#62;Comments&#60;/a&#62;&#60;/p&#62;
+            </description>
+            <category>api</category>
+            <category>haskell</category>
+        </item>
+        <item>
+            <title>From Open (Unlimited) to Minimum Vacation Policy</title>
+            <link>http://www.paperplanes.de/2014/12/10/from-open-to-minimum-vacation-policy.html</link>
+            <guid isPermaLink="false">https://lobste.rs/s/yr4nwe</guid>
+            <author>tobym</author>
+            <pubDate>Wed, 10 Dec 2014 13:55:44 -0600</pubDate>
+            <comments>https://lobste.rs/s/yr4nwe/from_open_unlimited_to_minimum_vacation_policy</comments>
+            <description>
+
+                &#60;p&#62;&#60;a href=&#34;https://lobste.rs/s/yr4nwe/from_open_unlimited_to_minimum_vacation_policy&#34;&#62;Comments&#60;/a&#62;&#60;/p&#62;
+            </description>
+            <category>culture</category>
+        </item>
+        <item>
+            <title>Go 1.4 released</title>
+            <link>https://blog.golang.org/go1.4</link>
+            <guid isPermaLink="false">https://lobste.rs/s/ftfts1</guid>
+            <author>kb</author>
+            <pubDate>Thu, 11 Dec 2014 00:33:06 -0600</pubDate>
+            <comments>https://lobste.rs/s/ftfts1/go_1_4_released</comments>
+            <description>
+
+                &#60;p&#62;&#60;a href=&#34;https://lobste.rs/s/ftfts1/go_1_4_released&#34;&#62;Comments&#60;/a&#62;&#60;/p&#62;
+            </description>
+            <category>go</category>
+        </item>
+        <item>
+            <title>Trolls Just Want to Have Fun</title>
+            <link>http://scottbarrykaufman.com/wp-content/uploads/2014/02/trolls-just-want-to-have-fun.pdf</link>
+            <guid isPermaLink="false">https://lobste.rs/s/idh784</guid>
+            <author>pushcx</author>
+            <pubDate>Thu, 11 Dec 2014 11:15:03 -0600</pubDate>
+            <comments>https://lobste.rs/s/idh784/trolls_just_want_to_have_fun</comments>
+            <description>
+                &#60;p&#62;Abstract:&#60;/p&#62;&#10;&#10;&#60;blockquote&#62;&#60;p&#62;In two online studies (total N = 1215), respondents completed personality inventories and a survey of their Internet commenting styles. Overall, strong positive associations emerged among online commenting frequency, trolling enjoyment, and troll identity, pointing to a common construct underlying the measures. Both studies revealed similar patterns of relations between trolling and the Dark Tetrad of personality: trolling correlated positively with sadism, psychopathy, and Machiavellianism, using both enjoyment ratings and identity scores. Of all personality measures, sadism showed the most robust associations with trolling and, importantly, the relationship was specific to trolling behavior. Enjoyment of other online activities, such as chatting and debating, was unrelated to sadism. Thus cyber-trolling appears to be an Internet manifestation of everyday sadism.&#60;/p&#62;&#60;/blockquote&#62;&#10;
+                &#60;p&#62;&#60;a href=&#34;https://lobste.rs/s/idh784/trolls_just_want_to_have_fun&#34;&#62;Comments&#60;/a&#62;&#60;/p&#62;
+            </description>
+            <category>science</category>
+            <category>pdf</category>
+            <category>culture</category>
+        </item>
+        <item>
+            <title>Easy Read/Write Splitting with PHP&#8217;s MySQLnd</title>
+            <link>https://blog.engineyard.com/2014/easy-read-write-splitting-php-mysqlnd/</link>
+            <guid isPermaLink="false">https://lobste.rs/s/snrx6z</guid>
+            <author>dshafik</author>
+            <pubDate>Thu, 11 Dec 2014 15:10:08 -0600</pubDate>
+            <comments>https://lobste.rs/s/snrx6z/easy_read_write_splitting_with_php_s_mysqlnd</comments>
+            <description>
+
+                &#60;p&#62;&#60;a href=&#34;https://lobste.rs/s/snrx6z/easy_read_write_splitting_with_php_s_mysqlnd&#34;&#62;Comments&#60;/a&#62;&#60;/p&#62;
+            </description>
+            <category>php</category>
+            <category>databases</category>
+            <category>web</category>
+            <category>programming</category>
+        </item>
+        <item>
+            <title>socket99: Wrapper library for the BSD sockets API with a nicer C99 interface</title>
+            <link>https://github.com/silentbicycle/socket99</link>
+            <guid isPermaLink="false">https://lobste.rs/s/6lnxqy</guid>
+            <author>zem</author>
+            <pubDate>Wed, 10 Dec 2014 20:23:06 -0600</pubDate>
+            <comments>https://lobste.rs/s/6lnxqy/socket99_wrapper_library_for_the_bsd_sockets_api_with_a_nicer_c99_interface</comments>
+            <description>
+
+                &#60;p&#62;&#60;a href=&#34;https://lobste.rs/s/6lnxqy/socket99_wrapper_library_for_the_bsd_sockets_api_with_a_nicer_c99_interface&#34;&#62;Comments&#60;/a&#62;&#60;/p&#62;
+            </description>
+            <category>c</category>
+            <category>programming</category>
+        </item>
+        <item>
+            <title>Databases at 14.4Mhz</title>
+            <link>http://blog.foundationdb.com/databases-at-14.4mhz</link>
+            <guid isPermaLink="false">https://lobste.rs/s/unh97t</guid>
+            <author>peter</author>
+            <pubDate>Wed, 10 Dec 2014 13:29:48 -0600</pubDate>
+            <comments>https://lobste.rs/s/unh97t/databases_at_14_4mhz</comments>
+            <description>
+
+                &#60;p&#62;&#60;a href=&#34;https://lobste.rs/s/unh97t/databases_at_14_4mhz&#34;&#62;Comments&#60;/a&#62;&#60;/p&#62;
+            </description>
+            <category>databases</category>
+            <category>distributed</category>
+        </item>
+        <item>
+            <title>Category Theory by Tom LaGatta</title>
+            <link>https://www.youtube.com/watch?v=o6L6XeNdd_k</link>
+            <guid isPermaLink="false">https://lobste.rs/s/brkfug</guid>
+            <author>RiderOfGiraffes</author>
+            <pubDate>Thu, 11 Dec 2014 03:56:48 -0600</pubDate>
+            <comments>https://lobste.rs/s/brkfug/category_theory_by_tom_lagatta</comments>
+            <description>
+
+                &#60;p&#62;&#60;a href=&#34;https://lobste.rs/s/brkfug/category_theory_by_tom_lagatta&#34;&#62;Comments&#60;/a&#62;&#60;/p&#62;
+            </description>
+            <category>video</category>
+            <category>compsci</category>
+            <category>math</category>
+        </item>
+        <item>
+            <title>Literate DevOps</title>
+            <link>http://www.howardism.org/Technical/Emacs/literate-devops.html</link>
+            <guid isPermaLink="false">https://lobste.rs/s/brylt4</guid>
+            <author>arcatan</author>
+            <pubDate>Thu, 11 Dec 2014 12:31:33 -0600</pubDate>
+            <comments>https://lobste.rs/s/brylt4/literate_devops</comments>
+            <description>
+
+                &#60;p&#62;&#60;a href=&#34;https://lobste.rs/s/brylt4/literate_devops&#34;&#62;Comments&#60;/a&#62;&#60;/p&#62;
+            </description>
+            <category>devops</category>
+            <category>emacs</category>
+        </item>
+        <item>
+            <title>An ASM Monad</title>
+            <link>http://wall.org/~lewis/2013/10/15/asm-monad.html</link>
+            <guid isPermaLink="false">https://lobste.rs/s/zxffdx</guid>
+            <author>bitemyapp</author>
+            <pubDate>Wed, 10 Dec 2014 12:05:55 -0600</pubDate>
+            <comments>https://lobste.rs/s/zxffdx/an_asm_monad</comments>
+            <description>
+
+                &#60;p&#62;&#60;a href=&#34;https://lobste.rs/s/zxffdx/an_asm_monad&#34;&#62;Comments&#60;/a&#62;&#60;/p&#62;
+            </description>
+            <category>programming</category>
+        </item>
+        <item>
+            <title>Asynchronous filesystem replication with FUSE and rsync</title>
+            <link>https://github.com/immobiliare/sfs</link>
+            <guid isPermaLink="false">https://lobste.rs/s/l1vtqe</guid>
+            <author>Lethalman</author>
+            <pubDate>Thu, 11 Dec 2014 07:35:30 -0600</pubDate>
+            <comments>https://lobste.rs/s/l1vtqe/asynchronous_filesystem_replication_with_fuse_and_rsync</comments>
+            <description>
+                &#60;p&#62;As mentioned in one of the &#38;ldquo;What are you working on this week?&#38;rdquo;, can&#38;rsquo;t remember the week, I was working on a distributed file system for replicating data among geographical nodes for a multi-master active/active configuration.&#60;/p&#62;&#10;&#10;&#60;p&#62;This is the first time my company Immobiliare.it releases free software, so I wanted to share our work :)&#60;/p&#62;&#10;
+                &#60;p&#62;&#60;a href=&#34;https://lobste.rs/s/l1vtqe/asynchronous_filesystem_replication_with_fuse_and_rsync&#34;&#62;Comments&#60;/a&#62;&#60;/p&#62;
+            </description>
+            <category>linux</category>
+            <category>software</category>
+        </item>
+        <item>
+            <title>Peter Sunde: The Pirate Bay Should Stay Down</title>
+            <link>http://torrentfreak.com/peter-sunde-the-pirate-bay-should-stay-down-141210/</link>
+            <guid isPermaLink="false">https://lobste.rs/s/7rmhue</guid>
+            <author>journeysquid</author>
+            <pubDate>Wed, 10 Dec 2014 10:22:57 -0600</pubDate>
+            <comments>https://lobste.rs/s/7rmhue/peter_sunde_the_pirate_bay_should_stay_down</comments>
+            <description>
+
+                &#60;p&#62;&#60;a href=&#34;https://lobste.rs/s/7rmhue/peter_sunde_the_pirate_bay_should_stay_down&#34;&#62;Comments&#60;/a&#62;&#60;/p&#62;
+            </description>
+            <category>culture</category>
+        </item>
+    </channel>
+</rss>
+
