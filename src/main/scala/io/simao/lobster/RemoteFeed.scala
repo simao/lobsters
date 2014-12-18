@@ -3,17 +3,12 @@ package io.simao.lobster
 import com.typesafe.scalalogging.LazyLogging
 import dispatch.Defaults._
 import dispatch.{Http, url, _}
-
 import scala.concurrent.Future
 
 // Understands a lobster feed hosted remotely
 object RemoteFeed extends LazyLogging {
   type HTTPResult = Future[Either[Throwable, String]]
-  type FeedResult = Either[Throwable, List[FeedItem]]
-
-  def addScore(item: FeedItem, html: String): FeedItem = {
-    item.copy(score = Feed.findScore(html))
-  }
+  type FeedResult = Either[Throwable, Feed]
 
   def fetchHtml(item: FeedItem): HTTPResult= {
     val svc = url(item.commentsLink)
@@ -26,23 +21,22 @@ object RemoteFeed extends LazyLogging {
   }
 
   def fetchAll(feedUrl: String): FeedResult = {
-    val xmlFuture = fetchFeed(feedUrl)
+    val feed = fetchFeed(feedUrl).apply().right.flatMap(Feed.fromXml).right
 
-    xmlFuture.apply().right.flatMap { xml ⇒
-      Feed.fromXml(xml).right.flatMap { parsedFeed ⇒
-        // TODO: This can be done in parallel
-        parsedFeed.items.par.map { item ⇒
-          fetchHtml(item).apply().right.map { itemHtml ⇒
-            logger.info("Getting feed for item " + item.title)
-            addScore(item, itemHtml)
-          }
-        }.foldLeft(Right(List()): FeedResult)((acc, itemEither) ⇒ {
-          acc.right.flatMap(l ⇒ itemEither match {
-            case Left(t) ⇒ Left(t)
-            case Right(i) ⇒ Right(i :: l)
-          })
+    val scoredItems = feed.map {
+      _.items.par.map { feedItem ⇒
+        fetchHtml(feedItem).apply().right.map { feedHtml ⇒
+          feedItem.copy(score = Feed.findScore(feedHtml))
+        }
+      }.foldLeft(List[FeedItem]())((acc, itemE) ⇒
+        itemE match {
+          case Left(t) ⇒
+            logger.error("Could not download item score: ", t)
+            acc
+          case Right(v) ⇒ v :: acc
         })
-      }
     }
+
+    scoredItems.right.flatMap(l ⇒ feed.map(_.copy(items = l)))
   }
 }
