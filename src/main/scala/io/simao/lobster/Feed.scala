@@ -8,6 +8,7 @@ import scala.xml.XML
 
 case class FeedItem(title: String, link: String, commentsLink: String, pubDate: String, tags: Seq[String], score: Option[Int] = None)
 
+// Understands a Lobste.rs feed
 class Feed(private val items: Seq[FeedItem]) extends LazyLogging {
   def apply(i: Int) = items.apply(i)
 

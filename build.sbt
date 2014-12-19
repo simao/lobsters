@@ -15,3 +15,8 @@ libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.1.2"
 libraryDependencies += "org.rogach" %% "scallop" % "0.9.5"
 
 libraryDependencies += "io.argonaut" %% "argonaut" % "6.0.4"
+
+libraryDependencies += "org.twitter4j" % "twitter4j-core" % "4.0.2"
+
+libraryDependencies += "org.twitter4j" % "twitter4j-async" % "4.0.2"
+

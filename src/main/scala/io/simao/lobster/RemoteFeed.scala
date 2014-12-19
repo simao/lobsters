@@ -10,6 +10,7 @@ import scala.util.Try
 
 // Understands a lobster feed hosted remotely
 object RemoteFeed extends LazyLogging {
+  // TODO: This can be just Future[String] and we use Future.onError/recover to get errors
   type HTTPResult = Future[Try[String]]
 
   def fetchAll(feedUrl: String): Try[Feed] = {
