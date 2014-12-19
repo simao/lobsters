@@ -1,16 +1,23 @@
-import io.simao.lobster.Feed
+import io.simao.lobster.RemoteFeed.HTTPResult
+import io.simao.lobster.{FeedItem, Feed}
 import org.scalatest.FunSuite
 
+import scala.concurrent.Future
 import scala.io.Source
+import scala.util.{Failure, Success}
 
 class FeedTest extends FunSuite {
   val xmlStr = Source
     .fromInputStream(getClass.getResourceAsStream("testFeed.xml"))
     .mkString
 
-  def parsedFeed = Feed.fromXml(xmlStr)
+  val itemHtml = Source
+    .fromInputStream(getClass.getResourceAsStream("testItem.html"))
+    .mkString
 
-  def parsedItem = parsedFeed.right.get(0)
+  def parsedFeed = Feed.fromXml(xmlStr).get
+
+  def parsedItem = parsedFeed(0)
 
   test("parses an item's attributes") {
     val p = parsedItem
@@ -22,23 +29,30 @@ class FeedTest extends FunSuite {
   }
 
   test("multiple tags are parsed into a list") {
-    val p = parsedFeed.right.get(1)
+    val p = parsedFeed(1)
     assert(p.tags === List("browsers", "security", "web"))
   }
   
   test("a feed's lastUpdatedAt is the pubDate of the first feed item") {
-    assert(parsedFeed.right.map(_.lastUpdatedAt) === Right(Some("Fri, 12 Dec 2014 19:19:46 -0600")))
+    assert(parsedFeed.lastUpdatedAt === Some("Fri, 12 Dec 2014 19:19:46 -0600"))
   }
 
   test("parses a list with the size equal to the number of items in the feed") {
-    assert(parsedFeed.right.map(_.size) === Right(25))
+    assert(parsedFeed.size === 25)
   }
 
   test("finds a score inside an item's html") {
-    val itemHtml = Source
-      .fromInputStream(getClass.getResourceAsStream("testItem.html"))
-      .mkString
-
     assert(Feed.findScore(itemHtml) === Some(17))
+  }
+
+  test("adds items scores when found in HTML") {
+    def f: (FeedItem ⇒ HTTPResult) = { _ ⇒ Future.successful(Success(itemHtml)) }
+
+    assert(parsedFeed.withScores(f).apply(0).score === Some(17))
+  }
+
+  test("returns an empty list when item is not found in HTML") {
+    def f: (FeedItem ⇒ HTTPResult) = { _ ⇒ Future.successful(Failure(new Exception("Could not get Score"))) }
+    assert(parsedFeed.withScores(f).size === 0)
   }
 }
