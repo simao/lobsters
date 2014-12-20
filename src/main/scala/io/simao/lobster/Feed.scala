@@ -1,12 +1,16 @@
 package io.simao.lobster
 
+import java.util.Locale
+
 import com.typesafe.scalalogging.LazyLogging
 import io.simao.lobster.RemoteFeed.HTTPResult
 import dispatch._
+import org.joda.time.DateTime
+import org.joda.time.format.DateTimeFormat
 import scala.util.{Failure, Success, Try}
 import scala.xml.XML
 
-case class FeedItem(title: String, link: String, commentsLink: String, pubDate: String, tags: Seq[String], score: Option[Int] = None)
+case class FeedItem(title: String, link: String, commentsLink: String, pubDate: DateTime, tags: Seq[String], score: Option[Int] = None)
 
 // Understands a Lobste.rs feed
 class Feed(private val items: Seq[FeedItem]) extends LazyLogging {
@@ -14,11 +18,15 @@ class Feed(private val items: Seq[FeedItem]) extends LazyLogging {
 
   def size = items.size
 
-  def lastUpdatedAt: Option[String] = items.lift(0).map(_.pubDate)
+  def lastUpdatedAt: Option[DateTime] = items.lift(0).map(_.pubDate)
 
   def withScores(fetchItemHtml: FeedItem ⇒ HTTPResult): Feed = {
     val scoredItems = itemsWithScores(fetchItemHtml)
     Feed(scoredItems)
+  }
+
+  def itemsAfter(date: DateTime): Seq[FeedItem] = {
+    items.filter(_.pubDate.isAfter(date))
   }
 
   private def itemsWithScores(fetchItemHtml: FeedItem ⇒ HTTPResult): List[FeedItem] = {
@@ -57,7 +65,12 @@ object Feed {
         commentsLink ← item \ "comments"
         pubDate ← item \ "pubDate"
         tags = (item \ "category").foldRight(List[String]())(_.text :: _)
-      } yield FeedItem(title.text, link.text, commentsLink.text, pubDate.text, tags)
+      } yield FeedItem(title.text, link.text, commentsLink.text, feedDate(pubDate.text), tags)
     }).map(Feed(_))
+  }
+
+  private def feedDate(str: String): DateTime = {
+    val fmt = DateTimeFormat.forPattern("EEE, dd MMM yyyy HH:mm:ss Z").withLocale(Locale.ENGLISH)
+    fmt.parseDateTime(str)
   }
 }

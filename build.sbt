@@ -20,3 +20,5 @@ libraryDependencies += "org.twitter4j" % "twitter4j-core" % "4.0.2"
 
 libraryDependencies += "org.twitter4j" % "twitter4j-async" % "4.0.2"
 
+libraryDependencies += "com.github.nscala-time" %% "nscala-time" % "1.6.0"
+

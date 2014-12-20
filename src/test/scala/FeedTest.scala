@@ -1,5 +1,6 @@
 import io.simao.lobster.RemoteFeed.HTTPResult
 import io.simao.lobster.{FeedItem, Feed}
+import org.joda.time.DateTime
 import org.scalatest.FunSuite
 
 import scala.concurrent.Future
@@ -24,7 +25,7 @@ class FeedTest extends FunSuite {
     assert(p.title === "ssh chat.shazow.net")
     assert(p.link === "https://lobste.rs/s/lwmnsg/ssh_chat_shazow_net")
     assert(p.commentsLink === "https://lobste.rs/s/lwmnsg/ssh_chat_shazow_net")
-    assert(p.pubDate === "Fri, 12 Dec 2014 19:19:46 -0600")
+    assert(p.pubDate.toString === "2014-12-13T01:19:46.000Z")
     assert(p.tags === List("show"))
   }
 
@@ -34,7 +35,7 @@ class FeedTest extends FunSuite {
   }
   
   test("a feed's lastUpdatedAt is the pubDate of the first feed item") {
-    assert(parsedFeed.lastUpdatedAt === Some("Fri, 12 Dec 2014 19:19:46 -0600"))
+    assert(parsedFeed.lastUpdatedAt.map(_.toString) === Some("2014-12-13T01:19:46.000Z"))
   }
 
   test("parses a list with the size equal to the number of items in the feed") {
