@@ -10,12 +10,12 @@ import scala.concurrent.{ExecutionContext, Future}
 class BotTwitterStatus(tweetFn: String ⇒ Future[Status]) extends LazyLogging {
 
   def update(feed: Feed, lastUpdate: DateTime, minScore: Int)(implicit ec: ExecutionContext): Seq[Future[FeedItem]] = {
-    val tweet = tweetFn.compose(buildStatus)
+    val tweetItem = tweetFn.compose(buildStatus)
 
     val statuses = for {
       item ← feed.itemsAfter(lastUpdate)
       if item.score.exists(_ >= minScore)
-    } yield tweet(item).map(_ ⇒ item)
+    } yield tweetItem(item).map(_ ⇒ item)
 
     logger.info(s"Posting ${statuses.size} tweets")
 

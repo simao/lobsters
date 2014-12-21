@@ -1,13 +1,15 @@
 import io.simao.lobster.RemoteFeed.HTTPResult
 import io.simao.lobster.{FeedItem, Feed}
-import org.joda.time.DateTime
 import org.scalatest.FunSuite
 
-import scala.concurrent.Future
+import scala.concurrent.{Await, ExecutionContext, Future}
 import scala.io.Source
-import scala.util.{Failure, Success}
+
+import scala.concurrent.duration._
 
 class FeedTest extends FunSuite {
+  implicit val ec = ExecutionContext.global
+
   val xmlStr = Source
     .fromInputStream(getClass.getResourceAsStream("testFeed.xml"))
     .mkString
@@ -47,13 +49,16 @@ class FeedTest extends FunSuite {
   }
 
   test("adds items scores when found in HTML") {
-    def f: (FeedItem ⇒ HTTPResult) = { _ ⇒ Future.successful(Success(itemHtml)) }
+    def f: (FeedItem ⇒ HTTPResult) = { _ ⇒ Future.successful(itemHtml) }
 
-    assert(parsedFeed.withScores(f).apply(0).score === Some(17))
+    val result = Await.result(parsedFeed.withScores(f), 5.seconds)
+
+    assert(result.apply(0).score === Some(17))
   }
 
   test("returns an empty list when item is not found in HTML") {
-    def f: (FeedItem ⇒ HTTPResult) = { _ ⇒ Future.successful(Failure(new Exception("Could not get Score"))) }
-    assert(parsedFeed.withScores(f).size === 0)
+    def f: (FeedItem ⇒ HTTPResult) = { _ ⇒ Future.failed(new Exception("Could not get Score")) }
+    val result = Await.result(parsedFeed.withScores(f), 5.seconds)
+    assert(result.size === 0)
   }
 }

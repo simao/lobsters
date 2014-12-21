@@ -22,3 +22,4 @@ libraryDependencies += "org.twitter4j" % "twitter4j-async" % "4.0.2"
 
 libraryDependencies += "com.github.nscala-time" %% "nscala-time" % "1.6.0"
 
+libraryDependencies += "org.scalamock" %% "scalamock-scalatest-support" % "3.2" % "test"

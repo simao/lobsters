@@ -7,6 +7,7 @@ import io.simao.lobster.RemoteFeed.HTTPResult
 import dispatch._
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
+import scala.concurrent.ExecutionContext
 import scala.util.{Failure, Success, Try}
 import scala.xml.XML
 
@@ -20,27 +21,28 @@ class Feed(private val items: Seq[FeedItem]) extends LazyLogging {
 
   def lastUpdatedAt: Option[DateTime] = items.lift(0).map(_.pubDate)
 
-  def withScores(fetchItemHtml: FeedItem ⇒ HTTPResult): Feed = {
-    val scoredItems = itemsWithScores(fetchItemHtml)
-    Feed(scoredItems)
+  def withScores(fetchItemHtml: FeedItem ⇒ HTTPResult)(implicit ec: ExecutionContext): Future[Feed] = {
+    itemsWithScores(fetchItemHtml).map(Feed(_))
   }
 
   def itemsAfter(date: DateTime): Seq[FeedItem] = {
-    items.filter(_.pubDate.isAfter(date))
+    items.filter(_.pubDate.isAfter(date)).sortBy(-_.pubDate.getMillis)
   }
 
-  private def itemsWithScores(fetchItemHtml: FeedItem ⇒ HTTPResult): List[FeedItem] = {
+  private def itemsWithScores(fetchItemHtml: FeedItem ⇒ HTTPResult)(implicit ec: ExecutionContext): Future[List[FeedItem]] = {
     items.par.map { feedItem ⇒
-      fetchItemHtml(feedItem).apply().map { feedHtml ⇒
+      fetchItemHtml(feedItem).map { feedHtml ⇒
         feedItem.copy(score = Feed.findScore(feedHtml))
       }
-    }.foldLeft(List[FeedItem]())((acc, itemE) ⇒
-      itemE match {
-        case Failure(t) ⇒
-          logger.error(s"Could not download item score: ", t)
-          acc
-        case Success(v) ⇒ v :: acc
-      })
+    }.foldLeft(Future.successful(List[FeedItem]()))((acc, itemE) ⇒
+      acc.flatMap(l ⇒
+        itemE
+          .map(v ⇒ v :: l)
+          .recoverWith({ case t ⇒
+            logger.error("Could not fetch feed contents for item", t)
+            acc
+        })
+      ))
   }
 
   override def toString: String = items.mkString

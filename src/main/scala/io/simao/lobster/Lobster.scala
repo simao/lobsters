@@ -5,7 +5,7 @@ import com.typesafe.scalalogging.StrictLogging
 import dispatch.Http
 import org.joda.time.DateTime
 import org.rogach.scallop.ScallopConf
-import scala.concurrent.{Await, ExecutionContext}
+import scala.concurrent.{Future, Await, ExecutionContext}
 import scala.io.Source
 import scala.util.{Try, Failure, Success}
 import scala.concurrent.duration._
@@ -27,20 +27,31 @@ object Lobster extends App with StrictLogging {
 
   val conf = Config.fromSource(Source.fromFile(confFileName))
 
-  // TODO: Lots of stuff to do before start tweeting
+  val mainF = RemoteFeed.fetchAll(lobstersUrl).flatMap({ f ⇒
+    logger.info(s"Got feed with ${f.size} items")
 
-  RemoteFeed.fetchAll(lobstersUrl) match {
-    case Success(f) ⇒
-      logger.info(s"Got feed with ${f.size} items")
+    // TODO: Should update last updated on each `map`
+    def traverseF(itemF: Future[FeedItem]): Future[Unit] = {
+      itemF
+        .map(item ⇒ logger.info(s"Updated twitter for item: ${item.title} (${item.score})"))
+        .recover({case t ⇒ logger.error("Error updating twitter:", t)})
+    }
 
-//      new BotTwitterStatus(TwitterClient.tweet).update(f, DateTime.now().minusDays(1), 4)
+    val updatedTwitterF =
+      new BotTwitterStatus(TwitterClient.tweet)
+      .update(f, DateTime.now().minusDays(2), 4)
 
-    case Failure(t) ⇒
+    Future.traverse(updatedTwitterF)(traverseF)
+
+  }).recover({
+    case t ⇒
       logger.error("Could not fetch feed: ", t)
-  }
+  })
 
+  // TODO: Maybe instead of lastUpdate we can save an id for all twitted items
+  // How to deal with truncation?
 
-
+  Await.ready(mainF, 2 minutes)
 
   // TODO: See https://github.com/dispatch/reboot/issues/99
   Http.shutdown()

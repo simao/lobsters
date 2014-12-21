@@ -7,16 +7,16 @@ import io.simao.util.TryOps._
 import scala.concurrent.Future
 import scala.util.Try
 
-
 // Understands a lobster feed hosted remotely
 object RemoteFeed extends LazyLogging {
-  // TODO: This can be just Future[String] and we use Future.onError/recover to get errors
-  type HTTPResult = Future[Try[String]]
+  type HTTPResult = Future[String]
 
-  def fetchAll(feedUrl: String): Try[Feed] = {
-    fetchFeed(feedUrl).apply()
-      .flatMap(Feed.fromXml)
-      .map(_.withScores(fetchHtml))
+  def fetchAll(feedUrl: String): Future[Feed] = {
+    for {
+      feedXml ← fetchFeed(feedUrl)
+      feed ← Future.fromTry(Feed.fromXml(feedXml))
+      withScores ← feed.withScores(fetchHtml)
+    } yield withScores
   }
 
   private def fetchHtml(item: FeedItem): HTTPResult= {
@@ -29,6 +29,6 @@ object RemoteFeed extends LazyLogging {
 
   private def fetchHttp(remoteUrl: String): HTTPResult = {
     val svc = url(remoteUrl)
-    Http(svc OK as.String).either
+    Http(svc OK as.String)
   }
 }
