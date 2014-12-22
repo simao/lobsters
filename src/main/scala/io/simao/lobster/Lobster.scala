@@ -9,7 +9,7 @@ import scala.concurrent.{Future, Await, ExecutionContext}
 import scala.io.Source
 import scala.util.{Try, Failure, Success}
 import scala.concurrent.duration._
-
+;
 
 class CliOpts(args: Seq[String]) extends ScallopConf(args) {
   val defaultConfigFile = "lobster.json"
@@ -27,7 +27,7 @@ object Lobster extends App with StrictLogging {
 
   val conf = Config.fromSource(Source.fromFile(confFileName))
 
-  val mainF = RemoteFeed.fetchAll(lobstersUrl).flatMap({ f ⇒
+  val mainF = RemoteFeed.fetchAll(lobstersUrl).flatMap { f ⇒
     logger.info(s"Got feed with ${f.size} items")
 
     // TODO: Should update last updated on each `map`
@@ -43,7 +43,7 @@ object Lobster extends App with StrictLogging {
 
     Future.traverse(updatedTwitterF)(traverseF)
 
-  }).recover({
+  }.recover({
     case t ⇒
       logger.error("Could not fetch feed: ", t)
   })

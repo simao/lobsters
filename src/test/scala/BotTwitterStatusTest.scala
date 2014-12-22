@@ -14,15 +14,16 @@ class BotTwitterStatusTest extends FunSuite with MockFactory {
   // TODO: Should be tested somewhere else
   //  test("does not tweet if last updated is None") (pending)
 
-  def updateTwitterFn(s: String): Future[Status] = Future.successful(stub[Status])
+  val updateTwitterFn = mockFunction[String, Future[Status]]
 
   val subject = new BotTwitterStatus(updateTwitterFn)
 
-  test("returns a list of Future[FeedItem], ordered by date") {
-    val item1 = FeedItem("Title 1", "link 1", "link 2", DateTime.now().minusDays(1), List(), Some(11))
-    val item2 = FeedItem("Title 1", "link 1", "link 2", DateTime.now().minusDays(2), List(), Some(11))
+  val item1 = FeedItem("Title 1", "link 1", "link 2", DateTime.now().minusDays(1), List("tag0", "tag1"), Some(11))
+  val item2 = FeedItem("Title 1", "link 1", "link 2", DateTime.now().minusDays(2), List(), Some(11))
+  val feed = Feed(List(item1, item2))
 
-    val feed = Feed(List(item2, item1))
+  test("returns a list of Future[FeedItem], ordered by date") {
+    updateTwitterFn.stubs(*).returning(Future.successful(mock[Status]))
 
     val updates = Future.sequence(subject.update(feed, DateTime.now().minusDays(10), 10))
     val result = Await.result(updates, 5.seconds)
@@ -30,7 +31,17 @@ class BotTwitterStatusTest extends FunSuite with MockFactory {
     assert(result === List(item1, item2))
   }
 
-  test("tags are built properly") (pending)
+  test("tags are built properly") {
+    updateTwitterFn.expects("Title 1 link 1 link 2 #tag0 #tag1")
+      .once()
+      .returning(Future.successful(mock[Status]))
 
-  test("tags are built properly when no tags are available") (pending)
+    updateTwitterFn.expects("Title 1 link 1 link 2")
+      .once()
+      .returning(Future.successful(mock[Status]))
+
+    val updates = Future.sequence(subject.update(feed, DateTime.now().minusDays(10), 10))
+
+    Await.ready(updates, 5.seconds)
+  }
 }

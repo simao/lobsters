@@ -23,11 +23,7 @@ class BotTwitterStatus(tweetFn: String ⇒ Future[Status]) extends LazyLogging {
   }
 
   private def buildStatus(item: FeedItem): String = {
-    val tags = item.tags.map(t ⇒ s"#$t").mkString(" ")
-    s"${item.title} ${item.link} ${item.commentsLink} $tags"
+    val tags = item.tags.map(t ⇒ s"#$t").toList
+    (s"${item.title} ${item.link} ${item.commentsLink}" :: tags).mkString(" ")
   }
-}
-
-object BotTwitterStatus {
-
 }
