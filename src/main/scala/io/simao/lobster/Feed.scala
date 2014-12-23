@@ -11,7 +11,7 @@ import scala.concurrent.ExecutionContext
 import scala.util.{Failure, Success, Try}
 import scala.xml.XML
 
-case class FeedItem(title: String, link: String, commentsLink: String, pubDate: DateTime, tags: Seq[String], score: Option[Int] = None)
+case class FeedItem(guid: String, title: String, link: String, commentsLink: String, pubDate: DateTime, tags: Seq[String], score: Option[Int] = None)
 
 // Understands a Lobste.rs feed
 class Feed(private val items: Seq[FeedItem]) extends LazyLogging {
@@ -66,8 +66,9 @@ object Feed {
         link ← item \ "link"
         commentsLink ← item \ "comments"
         pubDate ← item \ "pubDate"
+        guid ← item \ "guid"
         tags = (item \ "category").foldRight(List[String]())(_.text :: _)
-      } yield FeedItem(title.text, link.text, commentsLink.text, feedDate(pubDate.text), tags)
+      } yield FeedItem(guid.text, title.text, link.text, commentsLink.text, feedDate(pubDate.text), tags)
     }).map(Feed(_))
   }
 

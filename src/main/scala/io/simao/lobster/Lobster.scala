@@ -3,6 +3,7 @@ package io.simao.lobster
 
 import com.typesafe.scalalogging.StrictLogging
 import dispatch.Http
+import io.simao.db.FeedDatabase
 import org.joda.time.DateTime
 import org.rogach.scallop.ScallopConf
 import scala.concurrent.{Future, Await, ExecutionContext}
@@ -30,16 +31,16 @@ object Lobster extends App with StrictLogging {
   val mainF = RemoteFeed.fetchAll(lobstersUrl).flatMap { f ⇒
     logger.info(s"Got feed with ${f.size} items")
 
-    // TODO: Should update last updated on each `map`
+    // TODO: Should save feed to db
     def traverseF(itemF: Future[FeedItem]): Future[Unit] = {
       itemF
         .map(item ⇒ logger.info(s"Updated twitter for item: ${item.title} (${item.score})"))
-        .recover({case t ⇒ logger.error("Error updating twitter:", t)})
+        .recover({ case t ⇒ logger.error("Error updating twitter:", t)})
     }
 
     val updatedTwitterF =
       new BotTwitterStatus(TwitterClient.tweet)
-      .update(f, DateTime.now().minusDays(2), 4)
+        .update(f, DateTime.now().minusDays(2), 4)
 
     Future.traverse(updatedTwitterF)(traverseF)
 

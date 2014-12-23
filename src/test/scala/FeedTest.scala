@@ -26,6 +26,7 @@ class FeedTest extends FunSuite {
     val p = parsedItem
     assert(p.title === "ssh chat.shazow.net")
     assert(p.link === "https://lobste.rs/s/lwmnsg/ssh_chat_shazow_net")
+    assert(p.guid === "https://lobste.rs/s/lwmnsg")
     assert(p.commentsLink === "https://lobste.rs/s/lwmnsg/ssh_chat_shazow_net")
     assert(p.pubDate.toString === "2014-12-13T01:19:46.000Z")
     assert(p.tags === List("show"))

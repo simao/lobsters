@@ -18,8 +18,8 @@ class BotTwitterStatusTest extends FunSuite with MockFactory {
 
   val subject = new BotTwitterStatus(updateTwitterFn)
 
-  val item1 = FeedItem("Title 1", "link 1", "link 2", DateTime.now().minusDays(1), List("tag0", "tag1"), Some(11))
-  val item2 = FeedItem("Title 1", "link 1", "link 2", DateTime.now().minusDays(2), List(), Some(11))
+  val item1 = FeedItem("g0", "Title 1", "link 1", "link 2", DateTime.now().minusDays(1), List("tag0", "tag1"), Some(11))
+  val item2 = FeedItem("g1", "Title 1", "link 1", "link 2", DateTime.now().minusDays(2), List(), Some(11))
   val feed = Feed(List(item1, item2))
 
   test("returns a list of Future[FeedItem], ordered by date") {
