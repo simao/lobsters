@@ -33,10 +33,10 @@ class FeedDatabaseTest extends FunSuite with MockFactory {
   }
 
   test("calls the block with a db connection") {
-    val f = mockFunction[Connection, FeedDatabase, Unit]
+    val f = mockFunction[FeedDatabase, Int]
 
-    f.expects(*, *)
+    f.expects(*).returning(22)
 
-    FeedDatabase.withConnection(defaultStr)(f)
+    assert(FeedDatabase.withConnection(defaultStr)(f) === 22)
   }
 }

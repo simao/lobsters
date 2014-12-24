@@ -21,6 +21,8 @@ class Feed(private val items: Seq[FeedItem]) extends LazyLogging {
 
   def lastUpdatedAt: Option[DateTime] = items.lift(0).map(_.pubDate)
 
+  def rejectItems(f: FeedItem ⇒ Boolean): Feed = new Feed(items.filterNot(f))
+
   def withScores(fetchItemHtml: FeedItem ⇒ HTTPResult)(implicit ec: ExecutionContext): Future[Feed] = {
     itemsWithScores(fetchItemHtml).map(Feed(_))
   }

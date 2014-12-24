@@ -11,11 +11,14 @@ object FeedDatabase {
     new FeedDatabase(connection)
   }
 
-  def withConnection(jdbcString: String)(f: (Connection, FeedDatabase) ⇒ Unit) = {
+  def withConnection[T](jdbcString: String)(f: FeedDatabase ⇒ T) = {
     val connection = DriverManager.getConnection(jdbcString)
     val db = new FeedDatabase(connection)
-    try f(connection, db)
-    finally connection.close()
+    try f(db)
+    finally {
+      println("CLOSINg")
+      connection.close()
+    }
   }
 }
 
@@ -44,13 +47,14 @@ class FeedDatabase(connection: Connection) {
   def isSaved(item: FeedItem): Boolean = {
     val stm = connection.createStatement()
     val rs = stm.executeQuery(s"select guid from saved_feed where guid = '${item.guid}'")
+    println("saved?")
     rs.next()
   }
 
   def setupTables(): Connection = {
     val statement = connection.createStatement()
-    statement.executeUpdate("drop table if exists saved_feed")
-    statement.executeUpdate("create table saved_feed (guid string, updated_at string)")
+    // statement.executeUpdate("drop table if exists saved_feed")
+    statement.executeUpdate("create table if not exists saved_feed (guid string, updated_at string)")
     connection
   }
 }

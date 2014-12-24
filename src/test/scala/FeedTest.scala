@@ -49,6 +49,11 @@ class FeedTest extends FunSuite {
     assert(Feed.findScore(itemHtml) === Some(17))
   }
 
+  test("rejects items with a reject fn") {
+    assert(parsedFeed.size === 25)
+    assert(parsedFeed.rejectItems(_ ⇒ true).size === 0)
+  }
+
   test("adds items scores when found in HTML") {
     def f: (FeedItem ⇒ HTTPResult) = { _ ⇒ Future.successful(itemHtml) }
 

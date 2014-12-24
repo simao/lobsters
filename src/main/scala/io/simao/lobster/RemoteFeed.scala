@@ -11,11 +11,11 @@ import scala.util.Try
 object RemoteFeed extends LazyLogging {
   type HTTPResult = Future[String]
 
-  def fetchAll(feedUrl: String): Future[Feed] = {
+  def fetchAll(feedUrl: String)(filter: FeedItem => Boolean): Future[Feed] = {
     for {
       feedXml ← fetchFeed(feedUrl)
       feed ← Future.fromTry(Feed.fromXml(feedXml))
-      withScores ← feed.withScores(fetchHtml)
+      withScores ← feed.rejectItems(filter).withScores(fetchHtml)
     } yield withScores
   }
 
