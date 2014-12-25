@@ -15,28 +15,11 @@ object FeedDatabase {
     val connection = DriverManager.getConnection(jdbcString)
     val db = new FeedDatabase(connection)
     try f(db)
-    finally {
-      println("CLOSINg")
-      connection.close()
-    }
+    finally connection.close()
   }
 }
 
 class FeedDatabase(connection: Connection) {
-  def rejectSaved(items: Seq[FeedItem]): Seq[FeedItem] = {
-    assert(items.size <= 30)
-
-    val ids = items.map(i ⇒ s"'${i.guid}'").mkString(",")
-    val stm = connection.createStatement()
-    val rs = stm.executeQuery(s"select guid from saved_feed where guid IN ($ids)")
-    var savedIds = Set[String]()
-
-    while(rs.next())
-      savedIds = savedIds + rs.getString("guid")
-
-    items.filterNot(i ⇒ savedIds.contains(i.guid))
-  }
-
   def save(item: FeedItem): FeedItem = {
     val statement = connection.createStatement()
     val now = DateTime.now().toString
@@ -47,13 +30,13 @@ class FeedDatabase(connection: Connection) {
   def isSaved(item: FeedItem): Boolean = {
     val stm = connection.createStatement()
     val rs = stm.executeQuery(s"select guid from saved_feed where guid = '${item.guid}'")
-    println("saved?")
     rs.next()
   }
 
-  def setupTables(): Connection = {
+  def setupTables(drop: Boolean = false): Connection = {
     val statement = connection.createStatement()
-    // statement.executeUpdate("drop table if exists saved_feed")
+    if(drop)
+      statement.executeUpdate("drop table if exists saved_feed")
     statement.executeUpdate("create table if not exists saved_feed (guid string, updated_at string)")
     connection
   }

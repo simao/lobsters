@@ -6,58 +6,61 @@ import io.simao.db.FeedDatabase
 import org.joda.time.DateTime
 import org.rogach.scallop.ScallopConf
 import scala.concurrent.{Future, Await, ExecutionContext}
-import scala.io.Source
-import scala.util.{Try, Failure, Success}
 import scala.concurrent.duration._
-;
 
 class CliOpts(args: Seq[String]) extends ScallopConf(args) {
-  val defaultConfigFile = "lobster.json"
   val jdbc = opt[String]("jdbc", descr = "JDBC Connection string", default = Some("jdbc:sqlite:saved_feeds.db"))
-  val confFile = opt[String]("config-file", descr = "path to a config file", default = Some(defaultConfigFile))
+  val days = opt[Int]("days", descr = "Only consider stories newer than this number of days", default = Some(2))
+  val score = opt[Int]("score", descr = "Minimum number of votes to tweet a story", default = Some(4))
+  val tweet = toggle("tweet", descrYes = "Tweet items", default = Some(true), noshort = true)
+  val drop = toggle("drop", descrYes = "Drop item database. CAUTION", default = Some(false), noshort = true)
 }
 
-// TODO: Support Print options
 object Lobster extends App with StrictLogging {
   implicit val ec = ExecutionContext.global
 
   val lobstersUrl = "https://lobste.rs/rss"
   val opts = new CliOpts(args)
-  val confFileName: String = opts.confFile.apply()
 
-  def dbExec[T](f: FeedDatabase ⇒ T): T = FeedDatabase.withConnection(opts.jdbc())(f)
+  def withDb[T](f: FeedDatabase ⇒ T): T = FeedDatabase.withConnection(opts.jdbc())(f)
 
-  def processTweetedItem(itemF: Future[FeedItem]): Future[Unit] = {
+  def processTweetedItem(db: FeedDatabase)(itemF: Future[FeedItem]): Future[Unit] = {
     itemF
-      .map(item ⇒ dbExec(_.save(item)))
+      .map(item ⇒ db.save(item))
       .map(item ⇒ logger.info(s"Updated twitter for item: ${item.title} (${item.score})"))
       .recover({ case t ⇒ logger.error("Error updating twitter:", t)})
   }
 
-  def getFeed: Future[Feed] = FeedDatabase.withConnection(opts.jdbc()) { db ⇒ {
-    logger.info("Wat")
-    RemoteFeed.fetchAll(lobstersUrl)(i ⇒ db.isSaved(i))
-  }}
+  def getUnsavedFeed(db: FeedDatabase): Future[Feed] = {
+    RemoteFeed.fetchAll(lobstersUrl)(db.isSaved)
+  }
 
-  // TODO: Get score and days back from conf
   def tweetFeed(feed: Feed): Seq[Future[FeedItem]] =
-    new BotTwitterStatus(TwitterClient.tweet)
-      .update(feed, DateTime.now().minusDays(2), 4)
+    new BotTwitterStatus(tweetFn)
+      .update(feed, DateTime.now().minusDays(opts.days()), opts.score())
 
-  dbExec(_.setupTables())
+  val tweetFn =
+    if(opts.tweet())
+      TwitterClient.tweet _
+    else
+      (t: String) ⇒ { logger.info(s"Not tweeting $t"); Future.successful("") }
 
-  val mainF = getFeed.flatMap { feed ⇒
-    logger.info(s"Got feed with ${feed.size} items")
+  withDb(_.setupTables(opts.drop()))
 
-    val updatedTwitterF = tweetFeed(feed)
+  withDb { db ⇒
+    val mainF = getUnsavedFeed(db).flatMap { feed ⇒
+      logger.info(s"Got feed with ${feed.size} unsaved items")
 
-    Future.traverse(updatedTwitterF)(processTweetedItem)
-  }.recover({
-    case t ⇒
-      logger.error("Could not fetch feed: ", t)
-  })
+      val updatedTwitterF = tweetFeed(feed)
 
-  Await.ready(mainF, 2 minutes)
+      Future.traverse(updatedTwitterF)(processTweetedItem(db))
+    }.recover {
+      case t ⇒
+        logger.error("Could not fetch feed: ", t)
+    }
+
+    Await.ready(mainF, 2 minutes)
+  }
 
   // TODO: See https://github.com/dispatch/reboot/issues/99
   Http.shutdown()

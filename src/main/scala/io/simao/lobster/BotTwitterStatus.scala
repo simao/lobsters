@@ -7,7 +7,7 @@ import twitter4j.Status
 import scala.concurrent.{ExecutionContext, Future}
 
 // Understands a LobstersBot twitter status
-class BotTwitterStatus(tweetFn: String ⇒ Future[Status]) extends LazyLogging {
+class BotTwitterStatus(tweetFn: String ⇒ Future[String]) extends LazyLogging {
 
   def update(feed: Feed, lastUpdate: DateTime, minScore: Int)(implicit ec: ExecutionContext): Seq[Future[FeedItem]] = {
     val tweetItem = tweetFn.compose(buildStatus)

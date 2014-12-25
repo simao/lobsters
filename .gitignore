@@ -57,3 +57,4 @@ project/plugins/project/
 *.iml
 
 src/main/resources/twitter4j.properties
+saved_feeds.db
