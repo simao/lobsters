@@ -16,10 +16,12 @@ class TwitterClientUpdateListener(val promise: Promise[String]) extends TwitterA
 
 // Understands the twitter remote service
 object TwitterClient {
-  val twitter = AsyncTwitterFactory.getSingleton
+  val twitterFactory = new AsyncTwitterFactory
 
   def tweet(text: String): Future[String] = {
     val p = Promise[String]()
+
+    val twitter = twitterFactory.getInstance
 
     twitter.addListener(new TwitterClientUpdateListener(p))
 

@@ -62,6 +62,8 @@ object Lobster extends App with StrictLogging {
     Await.ready(mainF, 2 minutes)
   }
 
+  logger.info("Finished getting lobster.rs feed items")
+
   // TODO: See https://github.com/dispatch/reboot/issues/99
   Http.shutdown()
 }
