@@ -1,0 +1,24 @@
+#!/bin/bash
+
+set -e
+
+if [ "$1" == "" ]; then
+    echo "usage: $0 <deploy host>"
+    exit 1
+fi
+
+HOST=$1
+DIR="/home/sm-data/lobsters"
+
+sbt assembly
+
+VERSION=$(sbt -Dsbt.log.format=false version | tail -n1 | cut -d' ' -f 2)
+
+# TODO: Use nicer jar path from sbt-assembly
+jar="target/scala-2.11/lobster-assembly-$VERSION.jar"
+
+scp $jar $HOST:$DIR/lobsters.jar
+
+scp lobsters $HOST:$DIR/lobsters
+
+
