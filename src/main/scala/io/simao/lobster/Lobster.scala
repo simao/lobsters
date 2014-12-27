@@ -27,7 +27,7 @@ object Lobster extends App with StrictLogging {
   def processTweetedItem(db: FeedDatabase)(itemF: Future[FeedItem]): Future[Unit] = {
     itemF
       .map(item ⇒ db.save(item))
-      .map(item ⇒ logger.info(s"Updated twitter for item: ${item.title} (${item.score})"))
+      .map(item ⇒ logger.info(s"Updated twitter for item: ${item.title} (${item.score.getOrElse("?")})"))
       .recover({ case t ⇒ logger.error("Error updating twitter:", t)})
   }
 
@@ -44,6 +44,8 @@ object Lobster extends App with StrictLogging {
       TwitterClient.tweet _
     else
       (t: String) ⇒ { logger.info(s"Not tweeting $t"); Future.successful("") }
+
+  logger.info(s"Getting lobste.rs news newer than ${opts.days()} days with score > ${opts.score()}")
 
   withDb(_.setupTables(opts.drop()))
 
