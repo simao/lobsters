@@ -7,7 +7,7 @@ newer than a set number of days and with a score greater than a given
 number.
 
 This is the source code behind
-[lobstersbot](https://twitter.com/lobstersbot)
+[lobstersbot](https://twitter.com/lobstersbot). Tweets are created every hour.
 
 ## Usage
 
