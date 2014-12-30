@@ -27,8 +27,9 @@ class Feed(private val items: Seq[FeedItem]) extends LazyLogging {
     itemsWithScores(fetchItemHtml).map(Feed(_))
   }
 
+  // TODO: Should return a new Feed?
   def itemsAfter(date: DateTime): Seq[FeedItem] = {
-    items.filter(_.pubDate.isAfter(date)).sortBy(-_.pubDate.getMillis)
+    items.filter(_.pubDate.isAfter(date)).sortBy(_.pubDate.getMillis)
   }
 
   private def itemsWithScores(fetchItemHtml: FeedItem ⇒ HTTPResult)(implicit ec: ExecutionContext): Future[List[FeedItem]] = {

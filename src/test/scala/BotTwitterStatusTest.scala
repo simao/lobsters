@@ -22,7 +22,7 @@ class BotTwitterStatusTest extends FunSuite with MockFactory {
     val updates = Future.sequence(subject.update(feed, DateTime.now().minusDays(10), 10))
     val result = Await.result(updates, 2.seconds)
 
-    assert(result === List(item1, item2))
+    assert(result === List(item2, item1))
   }
 
   test("tags are built properly") {
