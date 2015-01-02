@@ -8,15 +8,7 @@ import org.rogach.scallop.ScallopConf
 import scala.concurrent.{Future, Await, ExecutionContext}
 import scala.concurrent.duration._
 
-class CliOpts(args: Seq[String]) extends ScallopConf(args) {
-  val jdbc = opt[String]("jdbc", descr = "JDBC Connection string", default = Some("jdbc:sqlite:saved_feeds.db"))
-  val days = opt[Int]("days", descr = "Only consider stories newer than this number of days", default = Some(2))
-  val score = opt[Int]("score", descr = "Minimum number of votes to tweet a story", default = Some(10))
-  val tweet = toggle("tweet", descrYes = "Tweet items", default = Some(true), noshort = true)
-  val drop = toggle("drop", descrYes = "Drop item database. CAUTION", default = Some(false), noshort = true)
-}
-
-object Lobster extends App with StrictLogging {
+object LobsterApp extends App with StrictLogging {
   implicit val ec = ExecutionContext.global
 
   val lobstersUrl = "https://lobste.rs/rss"
@@ -35,7 +27,7 @@ object Lobster extends App with StrictLogging {
     RemoteFeed.fetchAll(lobstersUrl)(db.isSaved)
   }
 
-  def tweetFeed(feed: Feed): Seq[Future[FeedItem]] =
+  def updateBotStatus(feed: Feed): Seq[Future[FeedItem]] =
     new BotTwitterStatus(tweetFn)
       .update(feed, DateTime.now().minusDays(opts.days()), opts.score())
 
@@ -53,12 +45,12 @@ object Lobster extends App with StrictLogging {
     val mainF = getUnsavedFeed(db).flatMap { feed ⇒
       logger.info(s"Got feed with ${feed.size} unsaved items")
 
-      val updatedTwitterF = tweetFeed(feed)
+      val updatedTwitterF = updateBotStatus(feed)
 
       Future.traverse(updatedTwitterF)(processTweetedItem(db))
     }.recover {
       case t ⇒
-        logger.error("Could not fetch feed: ", t)
+        logger.error("An error occurred: ", t)
     }
 
     Await.ready(mainF, 2 minutes)

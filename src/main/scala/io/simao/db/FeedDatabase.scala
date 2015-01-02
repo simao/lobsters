@@ -4,6 +4,7 @@ import java.sql.{Connection, DriverManager}
 
 import io.simao.lobster.FeedItem
 import org.joda.time.DateTime
+import io.simao.util.KestrelObj._
 
 object FeedDatabase {
   def apply(jdbcString: String) = {
@@ -21,10 +22,11 @@ object FeedDatabase {
 
 class FeedDatabase(connection: Connection) {
   def save(item: FeedItem): FeedItem = {
-    val statement = connection.createStatement()
-    val now = DateTime.now().toString
-    statement.executeUpdate(s"insert into saved_feed values('${item.guid}', '$now')")
-    item
+    item.tap { i ⇒
+      val statement = connection.createStatement()
+      val now = DateTime.now().toString
+      statement.executeUpdate(s"insert into saved_feed values('${item.guid}', '$now')")
+    }
   }
 
   def isSaved(item: FeedItem): Boolean = {
@@ -34,10 +36,11 @@ class FeedDatabase(connection: Connection) {
   }
 
   def setupTables(drop: Boolean = false): Connection = {
-    val statement = connection.createStatement()
-    if(drop)
-      statement.executeUpdate("drop table if exists saved_feed")
-    statement.executeUpdate("create table if not exists saved_feed (guid string, updated_at string)")
-    connection
+    connection.tap { c ⇒
+      val statement = c.createStatement()
+      if (drop)
+        statement.executeUpdate("drop table if exists saved_feed")
+      statement.executeUpdate("create table if not exists saved_feed (guid string, updated_at string)")
+    }
   }
 }

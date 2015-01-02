@@ -4,16 +4,6 @@ import twitter4j._
 
 import scala.concurrent.{Promise, Future}
 
-class TwitterClientUpdateListener(val promise: Promise[String]) extends TwitterAdapter {
-  override def updatedStatus(status: Status): Unit = {
-    promise.success(status.getText)
-  }
-
-  override def onException(te: TwitterException, method: TwitterMethod): Unit = {
-    promise.failure(te)
-  }
-}
-
 // Understands the twitter remote service
 object TwitterClient {
   val twitterFactory = new AsyncTwitterFactory
@@ -28,5 +18,15 @@ object TwitterClient {
     twitter.updateStatus(text)
 
     p.future
+  }
+}
+
+class TwitterClientUpdateListener(val promise: Promise[String]) extends TwitterAdapter {
+  override def updatedStatus(status: Status): Unit = {
+    promise.success(status.getText)
+  }
+
+  override def onException(te: TwitterException, method: TwitterMethod): Unit = {
+    promise.failure(te)
   }
 }

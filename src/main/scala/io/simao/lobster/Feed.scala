@@ -40,7 +40,7 @@ class Feed(private val items: Seq[FeedItem]) extends LazyLogging {
     }.foldLeft(Future.successful(List[FeedItem]()))((acc, itemE) ⇒
       acc.flatMap(l ⇒
         itemE
-          .map(v ⇒ v :: l)
+          .map(_ :: l)
           .recoverWith({ case t ⇒
             logger.error("Could not fetch feed contents for item", t)
             acc
